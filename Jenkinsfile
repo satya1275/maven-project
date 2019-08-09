@@ -25,13 +25,13 @@ stages{
             parallel{
                     stage('Deploy to staging'){
                         steps{
-                            bat 'echo y|scp -o StrictHostKeyChecking=no -i C:\\Users\\satis\\Downloads\\tomcat-demo.pem webapp/target/*.war ec2-user@${params.tomcat_dev}:/var/lib/tomcat7/webapps'
+                            bat 'echo y|scp -o StrictHostKeyChecking=no -i C:\\Users\\satis\\Downloads\\tomcat-demo.pem webapp/target/*.war ec2-user@3.19.30.185:/var/lib/tomcat7/webapps'
                         }            
                     }
 
                     stage('Deploy to production'){
                         steps{
-                            bat 'echo y|scp -o StrictHostKeyChecking=no -i C:\\Users\\satis\\Downloads\\tomcat-demo.pem webapp/target/*.war ec2-user@${params.tomcat_prod}:/var/lib/tomcat7/webapps'
+                            bat 'echo y|scp -o StrictHostKeyChecking=no -i C:\\Users\\satis\\Downloads\\tomcat-demo.pem webapp/target/*.war ec2-user@18.218.69.197:/var/lib/tomcat7/webapps'
                         }        
                     }    
                 }
