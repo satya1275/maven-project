@@ -25,13 +25,13 @@ stages{
             parallel{
                     stage('Deploy to staging'){
                         steps{
-                            bat 'echo y|pscp -i C:\\Users\\satis\\Downloads\\tomcat-demo.pem webapp/target/*.war ec2-user@${params.tomcat_dev}:/var/lib/tomcat7/webapps'
+                            bat 'echo y|pscp -i C:\\Users\\satis\\Downloads\\tomcat-demo.ppk webapp/target/*.war ec2-user@${params.tomcat_dev}:/var/lib/tomcat7/webapps'
                         }            
                     }
 
                     stage('Deploy to production'){
                         steps{
-                            bat 'echo y|pscp -i C:\\Users\\satis\\Downloads\\tomcat-demo.pem webapp/target/*.war ec2-user@${params.tomcat_prod}:/var/lib/tomcat7/webapps'
+                            bat 'echo y|pscp -i C:\\Users\\satis\\Downloads\\tomcat-demo.ppk webapp/target/*.war ec2-user@${params.tomcat_prod}:/var/lib/tomcat7/webapps'
                         }        
                     }    
                 }
