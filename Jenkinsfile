@@ -25,13 +25,13 @@ stages{
             parallel{
                     stage('Deploy to staging'){
                         steps{
-                            sh "cp -i C:/Users/satis/Downloads/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat-dev}:/var/lib/tomcat7/webapps" 
+                            bat "cp -i C:/Users/satis/Downloads/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat-dev}:/var/lib/tomcat7/webapps" 
                         }            
                     }
 
                     stage('Deploy to production'){
                         steps{
-                            sh "cp -i C:/Users/satis/Downloads/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat-prod}:/var/lib/tomcat7/webapps" 
+                            bat "cp -i C:/Users/satis/Downloads/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat-prod}:/var/lib/tomcat7/webapps" 
                         }        
                     }    
                 }
