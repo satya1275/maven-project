@@ -3,8 +3,8 @@ pipeline{
     agent any
 
     parameters{
-        string(name:'tomcat-dev', defaultValue:'3.19.30.185', description:'Dev Server')
-        string(name:'tomcat-prod', defaultValue:'18.218.69.197', description:'Prod Server')
+        string(name:'tomcat_dev', defaultValue:'3.19.30.185', description:'Dev Server')
+        string(name:'tomcat_prod', defaultValue:'18.218.69.197', description:'Prod Server')
     }
 triggers{
         pollSCM('* * * * *')
@@ -25,13 +25,13 @@ stages{
             parallel{
                     stage('Deploy to staging'){
                         steps{
-                            bat "winscp -i C:/Users/satis/Downloads/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat-dev}:/var/lib/tomcat7/webapps" 
+                            bat "winscp -i C:/Users/satis/Downloads/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat_dev}:/var/lib/tomcat7/webapps" 
                         }            
                     }
 
                     stage('Deploy to production'){
                         steps{
-                            bat "winscp -i C:/Users/satis/Downloads/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat-prod}:/var/lib/tomcat7/webapps" 
+                            bat "winscp -i C:/Users/satis/Downloads/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat_prod}:/var/lib/tomcat7/webapps" 
                         }        
                     }    
                 }
