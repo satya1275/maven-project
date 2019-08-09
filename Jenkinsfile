@@ -1,47 +1,45 @@
+pipeline{
 
-pipeline {
     agent any
 
+    parameters{
+        string(name:'tomcat-dev', defaultValue:'3.19.30.185', description:'Dev Server'),
+        string(name:'tomcat-prod', defaultValue:'18.218.69.197', description:'Prod Server'),
+    }
+
+    triggers{
+        pollSCM('* * * * *')
+    }
+
     stages{
+
         stage('Build'){
-            steps {
-                bat 'mvn clean package'
-            }
-            post {
-                success {
-                    echo 'Now Archiving...'
-                    archiveArtifacts artifacts: '**/target/*.war'
-                }
-            }
-        }
-        stage('deploy to staging'){
             steps{
-
-                build job:'deploy-to-staging'
-
+                   sh 'mvn clean package'  
             }
-        }
-
-        stage('deploy to production'){
-
-            steps{
-
-                timeout(time:5, unit:'DAYS'){
-                    input message:'APPROVE PRODUCTION Deployment'
-                }
-
-                build job: 'deploy-to-prod'
-            }
-
             post{
                 success{
-                    echo 'Build SUCCESS! Code deployed to production'
-                }
-
-                failure{
-                    echo 'Deployment failed!'
+                    echo 'Build stage completed'
                 }
             }
+
+        stage('Deployments'){
+            parallel{
+                stage('Deploy to staging'){
+                    steps{
+                        sh "cp -i C:/Users/satis/Downloads/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat-dev}:/var/lib/tomcat7/webapps" 
+                    }            
+                }
+
+                stage('Deploy to production'){
+                    steps{
+                        sh "cp -i C:/Users/satis/Downloads/tomcat-demo.pem **/target/*.war ec2-user@${params.tomcat-prod}:/var/lib/tomcat7/webapps" 
+                    }        
+                }    
+            }
+        }    
+           
         }
+
     }
 }
