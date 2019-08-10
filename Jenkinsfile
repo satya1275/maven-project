@@ -1,44 +1,10 @@
 pipeline{
-
     agent any
-
-    parameters{
-        string(name:'tomcat_dev', defaultValue:'3.19.30.185', description:'Dev Server')
-        string(name:'tomcat_prod', defaultValue:'18.218.69.197', description:'Prod Server')
-    }
-triggers{
-        pollSCM('* * * * *')
-    }
-stages{
+    stages{
         stage('Build'){
             steps{
-                   bat 'mvn clean package'  
-            }
-            post{
-                success{
-                    echo 'Build stage completed'
-                    archiveArtifacts artifacts: '**/target/*.war'
-                }
+                bat 'mvn clean package'
             }
         }
-        stage('Deployments'){
-            parallel{
-                    stage('Deploy to staging'){
-                        steps{
-                            bat 'echo y|scp -o StrictHostKeyChecking=no -i C:\\Users\\satis\\Downloads\\tomcat-demo.pem webapp/target/*.war ec2-user@3.19.30.185:/var/lib/tomcat7/webapps'
-                        }            
-                    }
-
-                    stage('Deploy to production'){
-                        steps{
-                            bat 'echo y|scp -o StrictHostKeyChecking=no -i C:\\Users\\satis\\Downloads\\tomcat-demo.pem webapp/target/*.war ec2-user@18.218.69.197:/var/lib/tomcat7/webapps'
-                        }        
-                    }    
-                }
-            
-        }    
-           
-        }
-
-    
+    }
 }
